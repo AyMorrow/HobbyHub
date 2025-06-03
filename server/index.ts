@@ -1,18 +1,40 @@
 import express from "express";
-import { registerRoutes } from "./routes";
+import { createServer } from "http";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT || "3000");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-async function startServer() {
-  const httpServer = await registerRoutes(app);
-  
-  httpServer.listen(port, "0.0.0.0", () => {
-    console.log(`Fantasy Sports Hub running on port ${port}`);
-  });
-}
+// Serve static files from client directory
+app.use(express.static(path.join(__dirname, "../client")));
 
-startServer().catch(console.error);
+// Simple routes for preview
+app.get("/api/auth/user", (req, res) => {
+  res.status(401).json({ message: "Not authenticated" });
+});
+
+app.get("/api/teams", (req, res) => {
+  res.json([]);
+});
+
+app.get("/api/leagues", (req, res) => {
+  res.json([]);
+});
+
+// Serve the main page
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/index.html"));
+});
+
+const httpServer = createServer(app);
+
+httpServer.listen(port, "0.0.0.0", () => {
+  console.log(`Fantasy Sports Hub running on port ${port}`);
+});
