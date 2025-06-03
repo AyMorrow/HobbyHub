@@ -160,44 +160,29 @@ export type WeeklyStats = typeof weeklyStats.$inferSelect;
 export type PlatformConnection = typeof platformConnections.$inferSelect;
 
 // Insert schemas
-export const insertLeagueSchema = createInsertSchema(leagues, {
-  name: z.string().min(1, "League name is required"),
-  platform: z.string().min(1, "Platform is required"),
-  sport: z.string().min(1, "Sport is required"),
-  season: z.string().min(1, "Season is required"),
-  leagueId: z.string().min(1, "League ID is required"),
-}).omit({
+export const insertLeagueSchema = createInsertSchema(leagues).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export const insertFantasyTeamSchema = createInsertSchema(fantasyTeams, {
-  teamName: z.string().min(1, "Team name is required"),
-  teamId: z.string().min(1, "Team ID is required"),
-}).omit({
+export const insertFantasyTeamSchema = createInsertSchema(fantasyTeams).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export const insertChatMessageSchema = createInsertSchema(chatMessages, {
-  message: z.string().min(1, "Message cannot be empty"),
-}).omit({
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({
   id: true,
   createdAt: true,
 });
 
-export const insertWeeklyStatsSchema = createInsertSchema(weeklyStats, {
-  points: z.string().min(1, "Points are required"),
-}).omit({
+export const insertWeeklyStatsSchema = createInsertSchema(weeklyStats).omit({
   id: true,
   createdAt: true,
 });
 
-export const insertPlatformConnectionSchema = createInsertSchema(platformConnections, {
-  platform: z.string().min(1, "Platform is required"),
-}).omit({
+export const insertPlatformConnectionSchema = createInsertSchema(platformConnections).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
